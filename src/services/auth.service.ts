@@ -52,26 +52,25 @@ export class AuthService {
     };
   }
 
-  async registerNewUser(req): Promise<ResponseModel> {
+  async registerNewUser(user): Promise<ResponseModel> {
     const newUser: any = {
       _id: null,
-      email: req.body.email,
-      password: await bcrypt.hash(req.body.password, 10),
-      login: req.body.login,
-      userImg: req.body.userImg,
-      website: req.body.website,
-      mobile: req.body.mobile,
-      country: req.body.country,
-      city: req.body.city,
-      street: req.body.street,
-      house: req.body.house,
-      appartment: req.body.appartment
+      email: user.email,
+      password: await bcrypt.hash(user.password, 10),
+      login: user.login,
+      userImg: user.userImg,
+      website: user.website,
+      mobile: user.mobile,
+      country: user.country,
+      city: user.city,
+      street: user.street,
+      house: user.house,
+      appartment: user.appartment
     }
       const matchUser: Users = await this.usersRepository.findOneUserByEmail(newUser.email)
       if (!matchUser) {
-        await this.usersRepository.createUser(newUser)
-        const user: Users = await this.usersRepository.findOneUserByEmail(newUser.email)
-        const newId = user._id
+        const createdUser = await this.usersRepository.createUser(newUser)
+        const newId = createdUser.dataValues._id
         const newRole = {
           users_id: newId,
           roles_id: 3

@@ -14,27 +14,27 @@ export class BooksController {
 
     @Get('/id/:id')
     findOne(@Req() req: Request): any {
-        return this.booksService.findOne(req);
+        return this.booksService.findOne(req.params.id);
     }
 
     @Get('/:title')
     findBooksByTitle(@Req() req: Request): any {
-        return this.booksService.findBooksByTitle(req);
+        return this.booksService.findBooksByTitle(req.params.title);
     }
 
     @UseGuards(AuthGuard('jwt'))
     @Put('/:id')
     updatBook(@Req() req: Request): any {
-        return this.booksService.updateBook(req);
+        return this.booksService.updateBook(req.params.id, req.body);
     }
     @UseGuards(AuthGuard('jwt'))
     @Delete('/:id')
     deleteBook(@Req() req: Request): any {
-        return this.booksService.deleteBook(req);
+        return this.booksService.deleteBook(req.params.id);
     }
     @UseGuards(AuthGuard('jwt'))
     @Post()
     postBook(@Req() req: Request): any {
-        return this.booksService.postBook(req);
+        return this.booksService.postBook(req.body);
     }
 }

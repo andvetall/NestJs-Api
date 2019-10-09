@@ -1,6 +1,7 @@
 import { Injectable, Inject, HttpException } from '@nestjs/common';
 import { Books } from '../entities/books.entity';
 import { BooksRepository } from '../repositories'
+import { ResponseModel } from 'src/models';
 
 
 @Injectable()
@@ -15,39 +16,63 @@ export class BooksService {
   }
 
 
-  async findOne(req): Promise<Books> {
-    let book: any = await this.booksRepository.findOneBookById(req.params.id )
+  async findOne(id): Promise<Books> {
+    let book: any = await this.booksRepository.findOneBookById(id )
     return book
   }
 
 
-  async updateBook(req): Promise<HttpException> {
-    if (req.params.id) {
-      await this.booksRepository.updateBook(req.params.id,  req.body)
-      return new HttpException('Add is done', 200);
-    } else return new HttpException("Request body  is incorrect!", 404) 
+  async updateBook(id, body): Promise<ResponseModel> {
+    if (id) {
+      await this.booksRepository.updateBook(id, body)
+      return {
+        success: true,
+        message: 'Updating has been done'
+      }
+    } else {
+      return {
+        success: false,
+        message: 'Request body  is incorrect!'
+      }
+    }
   }
   
  
-  async deleteBook(req): Promise<HttpException> {
-    if (req.params.id) {
-      await this.booksRepository.deleteBook(req.params.id)
-      return new HttpException('Add is done', 200);
-    } else return new HttpException("Request body  is incorrect!", 404) 
+  async deleteBook(id): Promise<ResponseModel> {
+    if (id) {
+      await this.booksRepository.deleteBook(id)
+      return {
+        success: true,
+        message: 'Deleting has been done'
+      }
+    } else {
+      return {
+        success: false,
+        message: 'Request body  is incorrect!'
+      }
+    }
   }
 
 
-  async findBooksByTitle(req): Promise<any> {
+  async findBooksByTitle(title): Promise<Books[]> {
     const Sequelize = require('sequelize');
-    const books = await this.booksRepository.findAllToSearch(Sequelize.Op, req.params.title)
+    const books:any = await this.booksRepository.findAllToSearch(Sequelize.Op, title)
     return books
   }
 
 
-  async postBook(req): Promise<HttpException> {
-    if (req.body.title) {
-      await this.booksRepository.createBook(req.body)
-      return new HttpException('Add is done', 201);
-    } else return new HttpException("Requset body  is incorrect!", 404) 
+  async postBook(body): Promise<ResponseModel> {
+    if (body.title) {
+      await this.booksRepository.createBook(body)
+      return {
+        success: true,
+        message: 'Posting has been done'
+      }
+    } else {
+      return {
+        success: false,
+        message: 'Request body  is incorrect!'
+      }
+    }
   }
 }

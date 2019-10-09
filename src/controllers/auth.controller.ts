@@ -17,7 +17,7 @@ export class AuthController {
 
     @Post("/register")
     registerNewUser(@Req() req: Request): any {
-        return this.authService.registerNewUser(req);
+        return this.authService.registerNewUser(req.body);
     }
 
 }

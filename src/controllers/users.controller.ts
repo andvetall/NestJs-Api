@@ -14,19 +14,19 @@ export class UsersController {
 
     @Get('/:id')
     findOne(@Req() req: Request): any {
-        return this.usersService.findOne(req);
+        return this.usersService.findOne(req.params.id);
     }
     
     @UseGuards(AuthGuard('jwt'))
     @Delete('/:id')
     delete(@Req() req: Request): any {
-        return this.usersService.delete(req);
+        return this.usersService.delete(req.params.id);
     }
 
     @UseGuards(AuthGuard('jwt'))
     @Put('/:id')
     update(@Req() req: Request): any {
-        return this.usersService.update(req);
+        return this.usersService.update(req.params.id, req.body);
     }
 
   

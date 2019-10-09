@@ -21,7 +21,8 @@ export class UsersRepository {
     }
 
     async createUser(newUser){
-        await this.USERS_REPOSITORY.create<Users>(newUser);
+        const createdUser = await this.USERS_REPOSITORY.create<Users>(newUser);
+        return createdUser
     }
     async deleteUser(id?){
         this.USERS_REPOSITORY.destroy({ where: { _id: id } });

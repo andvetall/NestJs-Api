@@ -28,8 +28,8 @@ export class UsersService {
       }
   }
 
-  async findOne(req): Promise<ResponseModel> {
-      const user: Users = await this.usersRepository.findOneUserById(req.params.id)
+  async findOne(id): Promise<ResponseModel> {
+      const user: Users = await this.usersRepository.findOneUserById(id)
       if (user) {
         return {
           success: true,
@@ -44,11 +44,11 @@ export class UsersService {
       }
   }
 
-  async delete(req): Promise<ResponseModel> {
-      const checkUser = await this.usersRepository.findOneUserById(req.params.id)
+  async delete(id): Promise<ResponseModel> {
+      const checkUser = await this.usersRepository.findOneUserById(id)
       if (checkUser) {
-        await this.userRolesRepository.deleteRole(req.params.id)
-        await this.usersRepository.deleteUser(req.params.id)
+        await this.userRolesRepository.deleteRole(id)
+        await this.usersRepository.deleteUser(id)
         return {
           success: true,
           message: 'Delete is done'
@@ -62,14 +62,14 @@ export class UsersService {
       }
   }
 
-  async update(req): Promise<ResponseModel> {
-    const checkUser = await this.usersRepository.findOneUserById(req.params.id)
+  async update(id, body): Promise<ResponseModel> {
+    const checkUser = await this.usersRepository.findOneUserById(id)
       if (checkUser) {
-        await this.usersRepository.updateUser( req.params.id, req.body )
+        await this.usersRepository.updateUser(id, body )
         return {
           success: true,
           message: 'Update is done',
-          data: req.body
+          data: body
         }
       } else {
         return {
